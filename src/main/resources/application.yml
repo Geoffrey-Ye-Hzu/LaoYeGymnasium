@@ -9,7 +9,12 @@ spring:
       url: jdbc:mysql://localhost:3306/laoye?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 446652130
-#  开启热部署，加快开发，开发完成后关闭热部署（记得添加依赖）
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+  #  开启热部署，加快开发，开发完成后关闭热部署（记得添加依赖）
   devtools:
     restart:
       enabled: true
