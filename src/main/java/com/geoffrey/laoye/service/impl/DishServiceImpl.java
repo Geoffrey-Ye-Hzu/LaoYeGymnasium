@@ -12,19 +12,24 @@ import com.geoffrey.laoye.service.DishFlavorService;
 import com.geoffrey.laoye.service.DishService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 //小点：@Service只能写在实现类上，而不是写在接口上
 @Service
+@SuppressWarnings("all")
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements DishService {
     @Autowired
     private DishFlavorService dishFlavorService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 新增菜品，同时保存对应的口味数据
@@ -93,6 +98,15 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             return item;
         }).collect(Collectors.toList());
         dishFlavorService.saveBatch(flavors);
+
+        //清理所有菜品的缓存数据 (修改数据的建议全局清理缓存，因为修改一般都是一次性会修改到多个菜品类）
+        Set keys = redisTemplate.keys("dish_*");
+        redisTemplate.delete(keys);
+
+        //清理某个分类下面的菜品缓存数据（插入数据建议是局部清理缓存，因为插入数据一般只会修改到单个菜品类）
+        //String key = "dish_" + dishDto.getCategoryId() + "_1";
+        //redisTemplate.delete(key);
+
     }
 
     //根据数组ids(批量)删除菜品信息

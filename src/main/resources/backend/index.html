@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>老叶外卖管理端</title>
+    <title>老叶体育馆管理端</title>
     <link rel="shortcut icon" href="laoyelogo.ico">
     <!-- 引入样式 -->
     <link rel="stylesheet" href="plugins/element-ui/index.css" />
@@ -31,8 +31,7 @@
         <!-- sidebar -->
         <div class="sidebar-container">
           <div class="logo">
-            <!-- <img src="images/logo.png" width="122.5" alt="" /> -->
-            <img src="images/login/laoyelogo.png" alt="" style="width: 117px" />
+            <img src="images/login/laoyelogo1.png" alt="" style="width: 117px" />
           </div>
 
           <el-scrollbar wrap-class="scrollbar-wrapper">
@@ -114,40 +113,36 @@
         el: '#app',
         data() {
           return {
-            defAct: '2',
-            menuActived: '2',
+            defAct: '1',
+            menuActived: '1',
             userInfo: {},
             menuList: [
-              // {
-              //   id: '1',
-              //   name: '门店管理',
-              //   children: [
                   {
-                    id: '2',
+                    id: '1',
                     name: '员工管理',
                     url: 'page/member/list.html',
                     icon: 'icon-member'
                   },
                   {
-                    id: '3',
+                    id: '2',
                     name: '分类管理',
                     url: 'page/category/list.html',
                     icon: 'icon-category'
                   },
                   {
-                    id: '4',
+                    id: '3',
                     name: '菜品管理',
                     url: 'page/food/list.html',
-                    icon: 'icon-food'
+                    icon: 'icon-29'
                   },
                   {
-                    id: '5',
+                    id: '4',
                     name: '套餐管理',
                     url: 'page/combo/list.html',
                     icon: 'icon-combo'
                   },
                   {
-                    id: '6',
+                    id: '5',
                     name: '订单明细',
                     url: 'page/order/list.html',
                     icon: 'icon-order'

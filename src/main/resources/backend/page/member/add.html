@@ -55,6 +55,18 @@
             maxlength="20"
           />
         </el-form-item>
+
+        <el-form-item
+                label="职位:"
+                prop="post"
+        >
+          <el-input
+                  v-model="ruleForm.post"
+                  placeholder="请输入职位"
+                  maxlength="20"
+          />
+        </el-form-item>
+
         <el-form-item
           label="性别:"
           prop="sex"
@@ -118,6 +130,7 @@
             ruleForm : {
                 'name': '',
                 'phone': '',
+                'post': '',
                 'sex': '男',
                 'idNumber': '',
                 username: '',
@@ -188,7 +201,8 @@
                           username: '',
                           'name': '',
                           'phone': '',
-                          'password': '',
+                          'post': '',
+                          'password': ''z,
                           // 'rePassword': '',/
                           'sex': '男',
                           'idNumber': ''

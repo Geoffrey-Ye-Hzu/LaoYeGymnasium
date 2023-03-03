@@ -90,7 +90,7 @@ public class CommonController {
                 outputStream.flush();
             }
 
-            //关闭资源
+            //关闭资源  
             outputStream.close();
             fileInputStream.close();
         } catch (Exception e) {

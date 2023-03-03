@@ -19,6 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +48,8 @@ public class SetmealController {
      * @return
      */
     @PostMapping
-    private R<String> save(@RequestBody SetmealDto setmealDto) {
+    @CacheEvict(value = "setmealCache",allEntries = true)
+    public R<String> save(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息：{}", setmealDto);
         setmealService.saveWithDish(setmealDto);
         return R.success("新增套餐成功");
@@ -61,7 +64,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/page")
-    private R<Page> page(int page, int pageSize, String name) {
+    public R<Page> page(int page, int pageSize, String name) {
         Page<Setmeal> pageInfo = new Page<>(page, pageSize);
         Page<SetmealDto> setmealDtoPage = new Page<>(page, pageSize);
 
@@ -95,8 +98,10 @@ public class SetmealController {
      * @return
      */
     @DeleteMapping
+    //删除操作只能是该菜品或者套餐为停售的状态，而停售状态客户页面是访问不到的，
+    // 不用担心是否会被访问到，该清理缓存的操作应该交给状态修改的方法上
     //别忘记集合需要添加@RequestParam注解!!!!
-    private R<String> delete(@RequestParam List<Long> ids) {
+    public R<String> delete(@RequestParam List<Long> ids) {
         setmealService.deleteByIdsWithDish(ids);
         return R.success("删除套餐成功");
     }
@@ -108,7 +113,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/{id}")
-    private R<SetmealDto> getById(@PathVariable Long id) {
+    public R<SetmealDto> getById(@PathVariable Long id) {
         SetmealDto setmealDto = setmealService.getByIdWithDish(id);
         log.info("setmealDto的信息为：{}", setmealDto);
         return R.success(setmealDto);
@@ -121,10 +126,27 @@ public class SetmealController {
      * @return
      */
     @PutMapping
-    private R<String> update(@RequestBody SetmealDto setmealDto) {
+    public R<String> update(@RequestBody SetmealDto setmealDto) {
         log.info("setmealDto的信息为：{}", setmealDto);
         setmealService.updateWithDish(setmealDto);
         return R.success("套餐修改成功");
+    }
+
+    /**
+     * 根据条件查询套餐数据
+     * @param setmeal
+     * @return
+     */
+    @GetMapping("/list")
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId+'_'+#setmeal.status")
+    //方法为public私有的话上面的缓存注解会报错
+    public R<List<Setmeal>> list(Setmeal setmeal) {
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, 1);
+        queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+        List<Setmeal> list = setmealService.list(queryWrapper);
+        return R.success(list);
     }
 
     /**
@@ -135,28 +157,13 @@ public class SetmealController {
      * @return
      */
     @PostMapping("/status/{status}")
-    private R<String> status(@PathVariable Integer status, @RequestParam List<Long> ids) {
+    @CacheEvict(value = "setmealCache",allEntries = true)
+    public R<String> status(@PathVariable Integer status, @RequestParam List<Long> ids) {
         LambdaUpdateWrapper<Setmeal> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(Setmeal::getId, ids);
         updateWrapper.set(Setmeal::getStatus, status);
         setmealService.update(updateWrapper);
         return R.success("修改状态成功");
-    }
-
-    /**
-     * 根据条件查询套餐数据
-     *
-     * @param setmeal
-     * @return
-     */
-    @GetMapping("/list")
-    private R<List<Setmeal>> list(Setmeal setmeal) {
-        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, 1);
-        queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
-        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
-        List<Setmeal> list = setmealService.list(queryWrapper);
-        return R.success(list);
     }
 
     /**

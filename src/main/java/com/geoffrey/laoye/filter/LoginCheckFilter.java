@@ -45,9 +45,9 @@ public class LoginCheckFilter implements Filter {
                 "/user/login" //移动端登录
         };
         //2.判断本次请求是否需要处理
-        boolean check = check(urls, requestURI);
+        boolean checkFlag = check(urls, requestURI);
         //3.如果不需要处理，则直接放行
-        if (check) {
+        if (checkFlag) {
             log.info("本次请求{}不需要处理",requestURI);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;

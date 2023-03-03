@@ -23,7 +23,8 @@
   color: #707070;
 }
 .login-form {
-  background: #ffffff;
+  /*background:url(图片途径) no-repeat 4px 5px;*/
+  background: #FFFFFF;
   width: 40%;
   border-radius: 0px 8px 8px 0px;
   display: flex;
@@ -40,7 +41,7 @@
 .login-form .el-form-item.is-error .el-input__inner {
   border: 0 !important;
   border-bottom: 1px solid #fd7065 !important;
-  background: #fff !important;
+  background: #d4d3d8 !important;
 }
 .login-form .input-icon {
   height: 32px;
@@ -49,7 +50,7 @@
 }
 .login-form .el-input__inner {
   border: 0;
-  border-bottom: 1px solid #e9e9e8;
+  border-bottom: 1px solid #206c566b;
   border-radius: 0;
   font-size: 14px;
   font-weight: 400;
