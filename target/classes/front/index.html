@@ -6,7 +6,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-    <title>老叶外卖</title>
+    <title>老叶体育馆</title>
     <link rel="icon" href="images/laoyelogo.ico">
     <!--不同屏幕尺寸根字体设置-->
     <script src="./js/base.js"></script>
@@ -28,29 +28,34 @@
         <div class="divStatic">
             <img src="./images/laoyelogo.png" class="logo"/>
             <div class="divDesc">
-                <div class="divName">老叶餐厅</div>
-                <div class="divSend">
-                    <span><img src="./images/time.png"/> 距离1.5km</span>
-                    <span><img src="./images/money.png"/> 配送费6元</span>
-                    <span><img src="./images/location.png"/> 预计时长12min</span>
-                </div>
+                <div class="divTitleName">老叶体育馆 (LaoYeGymnasium)</div>
+                <!--                <div class="divSend">-->
+                <!--                    <span><img src="./images/time.png"/> 距离1.5km</span>-->
+                <!--                    <span><img src="./images/money.png"/> 配送费6元</span>-->
+                <!--                    <span><img src="./images/location.png"/> 预计时长12min</span>-->
+                <!--                </div>-->
             </div>
         </div>
         <div class="divDesc">
-            简介: 老叶中餐厅是老叶点餐的独立品牌，定位“大众化的美食外送餐饮”，旨为顾客打造专业美食。
+            老叶体育馆有着最优异的环境，内有空气清新器，可提供为专业比赛场地，旨在弘扬体育精神，坚持全面进步。
         </div>
     </div>
     <div class="divBody">
+        <!--侧栏分类-->
         <div class="divType">
             <ul>
-                <li v-for="(item,index) in categoryList" :key="index" @click="categoryClick(index,item.id,item.type)"
-                    :class="{active:activeType === index}">{{item.name}}
+                <li v-for="(item,index) in categoryList" :key="index" @click="onClick(index,item.id,item.type)"
+                    :class="{active:activeType === index,disabled: disabled}">{{item.name}}
                 </li>
             </ul>
         </div>
+
+        <!--        <div class="divDesc">{{'月销' + (item.saleNum ? item.saleNum : 0) }}</div>-->
+
+        <!--每个运动类别的套餐，单人票，器材-->
         <div class="divMenu">
             <div>
-                <div class="divItem" v-for="(item,index) in dishList" :key="index" @click="dishDetails(item)">
+                <div class="divItem" v-for="(item,index) in comboList" :key="index">
                     <el-image :src="imgPathConvert(item.image)">
                         <div slot="error" class="image-slot">
                             <img src="./images/noImg.png"/>
@@ -59,7 +64,6 @@
                     <div>
                         <div class="divName">{{item.name}}</div>
                         <div class="divDesc">{{item.description}}</div>
-                        <div class="divDesc">{{'月销' + (item.saleNum ? item.saleNum : 0) }}</div>
                         <div class="divBottom"><span>￥</span><span>{{item.price / 100}}</span></div>
                         <div class="divNum">
                             <div class="divSubtract" v-if="item.number > 0">
@@ -75,10 +79,61 @@
                         </div>
                     </div>
                 </div>
+                <div class="divItem" v-for="(item,index) in rentList" :key="index">
+                    <el-image :src="imgPathConvert(item.image)">
+                        <div slot="error" class="image-slot">
+                            <img src="./images/noImg.png"/>
+                        </div>
+                    </el-image>
+                    <div>
+                        <div class="divName">{{item.name}}</div>
+                        <div class="divDesc">{{item.description}}</div>
+                        <div class="divBottom"><span>￥</span><span>{{item.price / 100}}</span></div>
+                        <div class="divNum">
+                            <div class="divSubtract" v-if="item.number > 0">
+                                <img src="./images/subtract.png" @click.prevent.stop="subtractCart(item)"/>
+                            </div>
+                            <div class="divDishNum">{{item.number}}</div>
+                            <div class="divTypes" v-if="item.flavors && item.flavors.length > 0 && !item.number "
+                                 @click.prevent.stop="chooseFlavorClick(item)">选择规格
+                            </div>
+                            <div class="divAdd" v-else>
+                                <img src="./images/add.png" @click.prevent.stop="addCart(item)"/>
+                            </div>
+                        </div>
+                    </div>
+                    */
+                </div>
+                <div class="divItem" v-for="(item,index) in ticketList" :key="index">
+                    <el-image :src="imgPathConvert(item.image)">
+                        <div slot="error" class="image-slot">
+                            <img src="./images/noImg.png"/>
+                        </div>
+                    </el-image>
+                    <div>
+                        <div class="divName">{{item.name}}</div>
+                        <div class="divDesc">{{item.description}}</div>
+                        <div class="divBottom"><span>￥</span><span>{{item.price / 100}}</span></div>
+                        <div class="divNum">
+                            <div class="divSubtract" v-if="item.number > 0">
+                                <img src="./images/subtract.png" @click.prevent.stop="subtractCart(item)"/>
+                            </div>
+                            <div class="divDishNum">{{item.number}}</div>
+                            <div class="divTypes" v-if="item.flavors && item.flavors.length > 0 && !item.number "
+                                 @click.prevent.stop="chooseFlavorClick(item)">选择规格
+                            </div>
+                            <div class="divAdd" v-else>
+                                <img src="./images/add.png" @click.prevent.stop="addCart(item)"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-
     </div>
+
+    <!--下面未展开的购物车-->
     <div class="divLayer">
         <div class="divLayerLeft"></div>
         <div class="divLayerRight"></div>
@@ -94,30 +149,12 @@
             <span>{{goodsPrice}}</span>
         </div>
         <div class="divPrice"></div>
-        <div :class="{btnSubmitActive: cartData && cartData.length > 0, btnSubmit:!cartData || cartData.length<1}"
+        <div :class="{btnSubmitActive: cartData && cartData.length > 0, btnSubmit:!(cartData || cartData.length<1)}"
              @click="toAddOrderPage">去结算
         </div>
     </div>
-    <van-dialog v-model="dialogFlavor.show" :show-confirm-button="false" class="dialogFlavor" ref="flavorDialog">
-        <div class="dialogTitle">{{dialogFlavor.name}}</div>
-        <div class="divContent">
-            <div v-for="flavor in dialogFlavor.flavors" :key="flavor.id">
-                <div class="divFlavorTitle">{{flavor.name}}</div>
-                <span v-for="item in JSON.parse(flavor.value)"
-                      :key="item"
-                      @click="flavorClick(flavor,item)"
-                      :class="{spanActive:flavor.dishFlavor === item}"
-                >{{item}}</span>
-            </div>
-        </div>
-        <div class="divBottom">
-            <div><span class="spanMoney">￥</span>{{dialogFlavor.price / 100}}</div>
-            <div @click="dialogFlavorAddCart">加入购物车</div>
-        </div>
-        <div class="divFlavorClose" @click="dialogFlavor.show = false">
-            <img src="./images/close.png"/>
-        </div>
-    </van-dialog>
+
+    <!--展开购物车查看详细-->
     <van-popup v-model="cartDialogShow" position="bottom" :style="{ height: '50%' }" class="dialogCart">
         <div class="divCartTitle">
             <div class="title">购物车</div>
@@ -149,87 +186,161 @@
                 </div>
                 <div class="divSplit"></div>
             </div>
+
+            <!--            <div v-for="item in cartDataCombo" :key="item.id" class="divCartItem">-->
+            <!--                <el-image :src="imgPathConvert(item.image)">-->
+            <!--                    <div slot="error" class="image-slot">-->
+            <!--                        <img src="./images/noImg.png"/>-->
+            <!--                    </div>-->
+            <!--                </el-image>-->
+            <!--                <div class="divDesc">-->
+            <!--                    <div class="name">{{item.name}}</div>-->
+            <!--                    <div class="price">-->
+            <!--                        <span class="spanMoney">￥</span>{{item.amount}}-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divNum">-->
+            <!--                    <div class="divSubtract">-->
+            <!--                        <img src="./images/subtract.png" @click="cartNumberSubtract(item)"/>-->
+            <!--                    </div>-->
+            <!--                    <div class="divDishNum">{{item.number}}</div>-->
+            <!--                    <div class="divAdd">-->
+            <!--                        <img src="./images/add.png" @click="cartNumAdd(item)"/>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divSplit"></div>-->
+            <!--            </div>-->
+
+            <!--            <div v-for="item in cartDataRent" :key="item.id" class="divCartItem">-->
+            <!--                <el-image :src="imgPathConvert(item.image)">-->
+            <!--                    <div slot="error" class="image-slot">-->
+            <!--                        <img src="./images/noImg.png"/>-->
+            <!--                    </div>-->
+            <!--                </el-image>-->
+            <!--                <div class="divDesc">-->
+            <!--                    <div class="name">{{item.name}}</div>-->
+            <!--                    <div class="price">-->
+            <!--                        <span class="spanMoney">￥</span>{{item.amount}}-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divNum">-->
+            <!--                    <div class="divSubtract">-->
+            <!--                        <img src="./images/subtract.png" @click="cartNumberSubtract(item)"/>-->
+            <!--                    </div>-->
+            <!--                    <div class="divDishNum">{{item.number}}</div>-->
+            <!--                    <div class="divAdd">-->
+            <!--                        <img src="./images/add.png" @click="cartNumAdd(item)"/>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divSplit"></div>-->
+            <!--            </div>-->
+
+            <!--            <div v-for="item in cartDataTicket" :key="item.id" class="divCartItem">-->
+            <!--                <el-image :src="imgPathConvert(item.image)">-->
+            <!--                    <div slot="error" class="image-slot">-->
+            <!--                        <img src="./images/noImg.png"/>-->
+            <!--                    </div>-->
+            <!--                </el-image>-->
+            <!--                <div class="divDesc">-->
+            <!--                    <div class="name">{{item.name}}</div>-->
+            <!--                    <div class="price">-->
+            <!--                        <span class="spanMoney">￥</span>{{item.amount}}-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divNum">-->
+            <!--                    <div class="divSubtract">-->
+            <!--                        <img src="./images/subtract.png" @click="cartNumberSubtract(item)"/>-->
+            <!--                    </div>-->
+            <!--                    <div class="divDishNum">{{item.number}}</div>-->
+            <!--                    <div class="divAdd">-->
+            <!--                        <img src="./images/add.png" @click="cartNumAdd(item)"/>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="divSplit"></div>-->
+            <!--            </div>-->
         </div>
     </van-popup>
-    <van-dialog v-model="detailsDialog.show"
-                :show-confirm-button="false"
-                class="detailsDialog"
-                ref="detailsDialog"
-                v-if="detailsDialog.show"
-    >
-        <div class="divContainer">
-            <el-image :src="imgPathConvert(detailsDialog.item.image)">
-                <div slot="error" class="image-slot">
-                    <img src="./images/noImg.png"/>
-                </div>
-            </el-image>
-            <div class="title">{{detailsDialog.item.name}}</div>
-            <div class="content">{{detailsDialog.item.description}}</div>
-        </div>
-        <div class="divNum">
-            <div class="left">
-                <span>￥</span><span>{{detailsDialog.item.price / 100}}</span>
-            </div>
-            <div class="right">
-                <div class="divSubtract" v-if="detailsDialog.item.number > 0">
-                    <img src="./images/subtract.png" @click="subtractCart(detailsDialog.item)"/>
-                </div>
-                <div class="divDishNum">{{detailsDialog.item.number}}</div>
-                <div class="divTypes"
-                     v-if="detailsDialog.item.flavors && detailsDialog.item.flavors.length > 0 && !detailsDialog.item.number "
-                     @click="chooseFlavorClick(detailsDialog.item)">选择规格
-                </div>
-                <div class="divAdd" v-else>
-                    <img src="./images/add.png" @click="addCart(detailsDialog.item)"/>
-                </div>
-            </div>
-        </div>
-        <div class="detailsDialogClose" @click="detailsDialog.show = false">
-            <img src="./images/close.png"/>
-        </div>
-    </van-dialog>
-    <van-dialog v-model="setMealDialog.show"
-                :show-confirm-button="false"
-                class="setMealDetailsDialog"
-                ref="setMealDetailsDialogd"
-                v-if="setMealDialog.show"
-    >
-        <div class="divContainer">
-            <div class="title">{{setMealDialog.item.name}}</div>
-            <div class="item" v-for="(item,index) in setMealDialog.item.list" :key="index">
-                <el-image :src="imgPathConvert(item.image)">
-                    <div slot="error" class="image-slot">
-                        <img src="./images/noImg.png"/>
-                    </div>
-                </el-image>
-                <div class="divSubTitle">{{item.name + '(' + item.copies + '份)' }}
-                    <div class="divPrice">
-                        <span>￥</span><span>{{item.price / 100}}</span>
-                    </div>
-                </div>
-                <div class="content">{{item.description}}</div>
-            </div>
-        </div>
-        <div class="divNum">
-            <div class="left">
-                <span>￥</span><span>{{setMealDialog.item.price / 100}}</span>
-            </div>
-            <div class="right">
-                <div class="divSubtract" v-if="setMealDialog.item.number > 0">
-                    <img src="./images/subtract.png" @click="subtractCart(setMealDialog.item)"/>
-                </div>
-                <div class="divDishNum">{{setMealDialog.item.number}}</div>
-                <div class="divAdd" v-if="setMealDialog.item.number">
-                    <img src="./images/add.png" @click="addCart(setMealDialog.item)"/>
-                </div>
-                <div class="addCart" @click="addCart(setMealDialog.item)" v-if="!setMealDialog.item.number">加入购物车
-                </div>
-            </div>
-        </div>
-        <div class="detailsDialogClose" @click="setMealDialog.show = false">
-            <img src="./images/close.png"/>
-        </div>
-    </van-dialog>
+
+<!--    <van-dialog v-model="detailsDialog.show"-->
+<!--                :show-confirm-button="false"-->
+<!--                class="detailsDialog"-->
+<!--                ref="detailsDialog"-->
+<!--                v-if="detailsDialog.show"-->
+<!--    >-->
+<!--        <div class="divContainer">-->
+<!--            <el-image :src="imgPathConvert(detailsDialog.item.image)">-->
+<!--                <div slot="error" class="image-slot">-->
+<!--                    <img src="./images/noImg.png"/>-->
+<!--                </div>-->
+<!--            </el-image>-->
+<!--            <div class="title">{{detailsDialog.item.name}}</div>-->
+<!--            <div class="content">{{detailsDialog.item.description}}</div>-->
+<!--        </div>-->
+<!--        <div class="divNum">-->
+<!--            <div class="left">-->
+<!--                <span>￥</span><span>{{detailsDialog.item.price / 100}}</span>-->
+<!--            </div>-->
+<!--            <div class="right">-->
+<!--                <div class="divSubtract" v-if="detailsDialog.item.number > 0">-->
+<!--                    <img src="./images/subtract.png" @click="subtractCart(detailsDialog.item)"/>-->
+<!--                </div>-->
+<!--                <div class="divDishNum">{{detailsDialog.item.number}}</div>-->
+<!--                <div class="divTypes"-->
+<!--                     v-if="detailsDialog.item.flavors && detailsDialog.item.flavors.length > 0 && !detailsDialog.item.number "-->
+<!--                     @click="chooseFlavorClick(detailsDialog.item)">选择规格-->
+<!--                </div>-->
+<!--                <div class="divAdd" v-else>-->
+<!--                    <img src="./images/add.png" @click="addCart(detailsDialog.item)"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="detailsDialogClose" @click="detailsDialog.show = false">-->
+<!--            <img src="./images/close.png"/>-->
+<!--        </div>-->
+<!--    </van-dialog>-->
+
+<!--        <van-dialog v-model="setMealDialog.show"-->
+<!--                    :show-confirm-button="false"-->
+<!--                    class="setMealDetailsDialog"-->
+<!--                    ref="setMealDetailsDialogd"-->
+<!--                    v-if="setMealDialog.show"-->
+<!--        >-->
+<!--            <div class="divContainer">-->
+<!--                <div class="title">{{setMealDialog.item.name}}</div>-->
+<!--                <div class="item" v-for="(item,index) in setMealDialog.item.list" :key="index">-->
+<!--                    <el-image :src="imgPathConvert(item.image)">-->
+<!--                        <div slot="error" class="image-slot">-->
+<!--                            <img src="./images/noImg.png"/>-->
+<!--                        </div>-->
+<!--                    </el-image>-->
+<!--                    <div class="divSubTitle">{{item.name + '(' + item.copies + '份)' }}-->
+<!--                        <div class="divPrice">-->
+<!--                            <span>￥</span><span>{{item.price / 100}}</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="content">{{item.description}}</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="divNum">-->
+<!--                <div class="left">-->
+<!--                    <span>￥</span><span>{{setMealDialog.item.price / 100}}</span>-->
+<!--                </div>-->
+<!--                <div class="right">-->
+<!--                    <div class="divSubtract" v-if="setMealDialog.item.number > 0">-->
+<!--                        <img src="./images/subtract.png" @click="subtractCart(setMealDialog.item)"/>-->
+<!--                    </div>-->
+<!--                    <div class="divDishNum">{{setMealDialog.item.number}}</div>-->
+<!--                    <div class="divAdd" v-if="setMealDialog.item.number">-->
+<!--                        <img src="./images/add.png" @click="addCart(setMealDialog.item)"/>-->
+<!--                    </div>-->
+<!--                    <div class="addCart" @click="addCart(setMealDialog.item)" v-if="!setMealDialog.item.number">加入购物车-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="detailsDialogClose" @click="setMealDialog.show = false">-->
+<!--                <img src="./images/close.png"/>-->
+<!--            </div>-->
+<!--        </van-dialog>-->
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../backend/plugins/vue/vue.js"></script>
@@ -252,12 +363,20 @@
                 activeType: 0,
                 categoryList: [],
                 categoryId: undefined,
-                dishList: [],
+
+                comboList: [],
+                rentList: [],
+                ticketList: [],
+
                 cartData: [],
+
+                cartDataCombo: [],
+                cartDataRent: [],
+                cartDataTicket: [],
+
                 dialogFlavor: {
                     name: '',
                     flavors: [],
-                    dishId: undefined,
                     price: undefined,
                     show: false,
                     image: ''
@@ -271,6 +390,8 @@
                     show: false,
                     item: {}
                 },
+
+                disabled: false, //是否禁用按钮
             }
         },
         computed: {
@@ -279,6 +400,7 @@
                 this.cartData.forEach(item => {
                     num += item.number
                 })
+
                 if (num < 99) {
                     return num
                 } else {
@@ -286,10 +408,12 @@
                 }
             },
             goodsPrice() {
+
                 let price = 0
                 this.cartData.forEach(item => {
                     price += (item.number * item.amount)
                 })
+
                 return price
             }
         },
@@ -317,83 +441,96 @@
                         this.categoryList = res[0].data
                         if (Array.isArray(res[0].data) && res[0].data.length > 0) {
                             this.categoryId = res[0].data[0].id
-                            if (res[0].data[0].type === 1) {
-                                this.getDishList()
-                            } else {
-                                this.getSetmealData()
-                            }
+                            this.getCartData()
+                            this.getComboData()
                         }
                     } else {
                         this.$notify({type: 'warning', message: res[0].msg});
                     }
-                    //获取菜品数据
-                    if (res[1].code === 1) {
-                        this.cartData = res[1].data
-                    } else {
-                        this.$notify({type: 'warning', message: res[1].msg});
-                    }
+
                 })
             },
+
+            onClick(index, id, type) {
+                if (this.disabled) {
+                    return;
+                }
+
+                this.disabled = true;
+                setTimeout(() => {
+                    this.disabled = false;
+                }, 800);
+                this.categoryClick(index, id, type);
+
+            },
+
             //分类点击
             categoryClick(index, id, type) {
                 this.activeType = index
                 this.categoryId = id
-                if (type === 1) {//菜品
-                    this.getDishList()
-                } else {
-                    this.getSetmealData()
-                }
+
+                this.getComboData()
+
             },
-            //获取菜品数据
-            async getDishList() {
-                if (!this.categoryId) {
-                    return
-                }
-                const res = await dishListApi({categoryId: this.categoryId, status: 1})
-                if (res.code === 1) {
-                    let dishList = res.data
-                    const cartData = this.cartData
-                    if (dishList.length > 0 && cartData.length > 0) {
-                        dishList.forEach(dish => {
-                            cartData.forEach(cart => {
-                                if (dish.id === cart.dishId) {
-                                    dish.number = cart.number
-                                }
-                            })
-                        })
-                    }
-                    this.dishList = dishList
-                } else {
-                    this.$notify({type: 'warning', message: res.msg});
-                }
-            },
+
             //获取套餐数据setmealId
-            async getSetmealData() {
+            async getComboData() {
                 if (!this.categoryId) {
                     return
                 }
                 const res = await setmealListApi({categoryId: this.categoryId, status: 1})
                 if (res.code === 1) {
-                    let dishList = res.data
-                    const cartData = this.cartData
-                    if (dishList.length > 0 && cartData.length > 0) {
-                        dishList.forEach(dish => {
-                            cartData.forEach(cart => {
-                                if (dish.id === cart.setmealId) {
-                                    dish.number = cart.number
+                    let comboList = res.data.combo
+                    let rentList = res.data.rent
+                    let ticketList = res.data.ticket
+
+                    const cartDataCombo = this.cartDataCombo
+                    const cartDataRent = this.cartDataRent
+                    const cartDataTicket = this.cartDataTicket
+
+
+                    if (comboList.length > 0 && cartDataCombo.length > 0) {
+                        comboList.forEach(combo => {
+                            cartDataCombo.forEach(comboCart => {
+                                if (combo.id === comboCart.setmealId) {
+                                    combo.number = comboCart.number
                                 }
                             })
                         })
                     }
-                    this.dishList = dishList
+
+                    if (rentList.length > 0 && cartDataRent.length > 0) {
+                        rentList.forEach(rent => {
+                            cartDataRent.forEach(rentCart => {
+                                if (rent.id === rentCart.setmealId) {
+                                    rent.number = rentCart.number
+                                }
+                            })
+                        })
+                    }
+
+                    if (ticketList.length > 0 && cartDataTicket.length > 0) {
+                        ticketList.forEach(ticket => {
+                            cartDataTicket.forEach(ticketCart => {
+                                if (ticket.id === ticketCart.setmealId) {
+                                    ticket.number = ticketCart.number
+                                }
+                            })
+                        })
+                    }
+                    this.comboList = comboList
+                    this.rentList = rentList
+                    this.ticketList = ticketList
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
                 }
             },
+
             //获取购物车数据
             async getCartData() {
                 const res = await cartListApi({})
                 if (res.code === 1) {
+
                     this.cartData = res.data
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
@@ -403,22 +540,29 @@
             async addCart(item) {
                 let params = {
                     amount: item.price / 100,//金额
-                    dishFlavor: item.dishFlavor,//口味  如果没有传undefined
-                    dishId: undefined,//菜品id
                     setmealId: undefined,//套餐id
                     name: item.name,
                     image: item.image
                 }
-                if (Array.isArray(item.flavors)) {//表示是菜品
-                    params.dishId = item.id
-                } else {//表示套餐 套餐没有口味
-                    params.setmealId = item.id
-                }
+
+                //表示套餐
+                params.setmealId = item.id
                 const res = await addCartApi(params)
                 if (res.code === 1) {
-                    this.dishList.forEach(dish => {
-                        if (dish.id === item.id) {
-                            dish.number = res.data.number
+
+                    this.comboList.forEach(combo => {
+                        if (combo.id === item.id) {
+                            combo.number = res.data.number
+                        }
+                    })
+                    this.rentList.forEach(rent => {
+                        if (rent.id === item.id) {
+                            rent.number = res.data.number
+                        }
+                    })
+                    this.ticketList.forEach(ticket => {
+                        if (ticket.id === item.id) {
+                            ticket.number = res.data.number
                         }
                     })
                     if (this.setMealDialog.show) {
@@ -430,11 +574,9 @@
                 }
             },
 
-            //菜单中减少选中的商品
+            //菜单中减少选中的项目
             async subtractCart(item) {
-                let params = {
-                    dishId: item.id,
-                }
+
                 if (!Array.isArray(item.flavors)) {
                     params = {
                         setmealId: item.id,
@@ -442,9 +584,20 @@
                 }
                 const res = await updateCartApi(params)
                 if (res.code === 1) {
-                    this.dishList.forEach(dish => {
-                        if (dish.id === item.id) {
-                            dish.number = (res.data.number === 0 ? undefined : res.data.number)
+
+                    this.comboList.forEach(combo => {
+                        if (combo.id === item.id) {
+                            combo.number = (res.data.number === 0 ? undefined : res.data.number)
+                        }
+                    })
+                    this.rentList.forEach(rent => {
+                        if (rent.id === item.id) {
+                            rent.number = (res.data.number === 0 ? undefined : res.data.number)
+                        }
+                    })
+                    this.ticketList.forEach(ticket => {
+                        if (ticket.id === item.id) {
+                            ticket.number = (res.data.number === 0 ? undefined : res.data.number)
                         }
                     })
                     if (this.setMealDialog.show) {
@@ -466,20 +619,30 @@
             async cartNumAdd(item) {
                 let params = {
                     amount: item.amount,//金额
-                    dishFlavor: item.dishFlavor,//口味  如果没有传undefined
-                    dishId: item.dishId,//菜品id
                     setmealId: item.setmealId,//套餐id
                     name: item.name,
                     image: item.image
                 }
                 const res = await addCartApi(params)
                 if (res.code === 1) {
-                    this.dishList.forEach(dish => {
-                        if (dish.id === (item.dishId || item.setmealId)) {
-                            dish.number = res.data.number
+
+
+                    this.comboList.forEach(combo => {
+                        if (combo.id === (item.setmealId)) {
+                            combo.number = res.data.number
                         }
                     })
-                    console.log(this.dishList)
+                    this.rentList.forEach(rent => {
+                        if (rent.id === (item.setmealId)) {
+                            rent.number = res.data.number
+                        }
+                    })
+                    this.ticketList.forEach(ticket => {
+                        if (ticket.id === (item.setmealId)) {
+                            ticket.number = res.data.number
+                        }
+                    })
+                    // console.log(this.dishList)
                     this.getCartData()
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
@@ -488,14 +651,24 @@
             //购物车中减少商品数量
             async cartNumberSubtract(item) {
                 let params = {
-                    dishId: item.dishId,
                     setmealId: item.setmealId,
                 }
                 const res = await updateCartApi(params)
                 if (res.code === 1) {
-                    this.dishList.forEach(dish => {
-                        if (dish.id === (item.dishId || item.setmealId)) {
-                            dish.number = (res.data.number === 0 ? undefined : res.data.number)
+
+                    this.comboList.forEach(combo => {
+                        if (combo.id === (item.setmealId)) {
+                            combo.number = (res.data.number === 0 ? undefined : res.data.number)
+                        }
+                    })
+                    this.rentList.forEach(rent => {
+                        if (rent.id === (item.setmealId)) {
+                            rent.number = (res.data.number === 0 ? undefined : res.data.number)
+                        }
+                    })
+                    this.ticketList.forEach(ticket => {
+                        if (ticket.id === (item.setmealId)) {
+                            ticket.number = (res.data.number === 0 ? undefined : res.data.number)
                         }
                     })
                     this.getCartData()
@@ -506,8 +679,19 @@
 
             //修改商品列表中的数据number
             changeDishList(item) {
-                for (let ele of this.dishList) {
-                    if (ele.id === (item.setmealId || item.dishId)) {
+
+                for (let ele of this.comboList) {
+                    if (ele.id === (item.setmealId)) {
+                        ele.number = item.number
+                    }
+                }
+                for (let ele of this.rentList) {
+                    if (ele.id === (item.setmealId)) {
+                        ele.number = item.number
+                    }
+                }
+                for (let ele of this.ticketList) {
+                    if (ele.id === (item.setmealId)) {
                         ele.number = item.number
                     }
                 }
@@ -517,65 +701,30 @@
             async clearCart() {
                 const res = await clearCartApi()
                 if (res.code === 1) {
-                    for (let ele of this.dishList) {
+                    // for (let ele of this.dishList) {
+                    //     ele.number = undefined
+                    // }
+                    for (let ele of this.comboList) {
+                        ele.number = undefined
+                    }
+                    for (let ele of this.rentList) {
+                        ele.number = undefined
+                    }
+                    for (let ele of this.ticketList) {
                         ele.number = undefined
                     }
                     this.cartData = []
+                    // this.cartDataCombo = []
+                    // this.cartDataRent = []
+                    // this.cartDataTicket = []
                     this.cartDialogShow = false
                 } else {
                     this.$notify({type: 'warning', message: res.msg});
                 }
             },
-            //点击选择规格
-            chooseFlavorClick(item) {
-                this.dialogFlavor = {
-                    name: '',
-                    flavors: [],
-                    dishId: undefined,
-                    price: undefined,
-                    show: false
-                }
-                this.dialogFlavor = {
-                    name: item.name,
-                    flavors: item.flavors,
-                    dishId: item.id,
-                    price: item.price,
-                    show: true,
-                    image: item.image
-                }
-            },
-            flavorClick(flavor, item) {
-                flavor.dishFlavor = item
-                //强制刷新dialog的dom
-                this.dialogFlavor.show = false
-                this.dialogFlavor.show = true
-            },
-            //选择规格加入购物车
-            dialogFlavorAddCart() {
-                const dialogFlavor = this.dialogFlavor
-                let flag = true
-                let dishFlavor = []
-                dialogFlavor.flavors.forEach(item => {
-                    if (item.dishFlavor) {
-                        dishFlavor.push(item.dishFlavor)
-                    } else {
-                        flag = false
-                        Notify({type: 'warning', message: '请选择' + item.name});
-                    }
-                })
-                if (flag) {
-                    this.addCart({
-                        price: dialogFlavor.price,
-                        dishFlavor: dishFlavor.join(","),
-                        id: dialogFlavor.dishId,
-                        flavors: [],
-                        image: dialogFlavor.image,
-                        name: dialogFlavor.name
-                    })
-                    this.dialogFlavor.show = false
-                }
 
-            },
+
+
             //网络图片路径转换
             imgPathConvert(path) {
                 return imgPath(path)

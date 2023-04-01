@@ -17,6 +17,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/addressBook")
 @Slf4j
+@SuppressWarnings("all")
+
 public class AddressBookController {
     @Autowired
     private AddressBookService addressBookService;
@@ -28,48 +30,59 @@ public class AddressBookController {
      */
     @PostMapping
     private R<String> save(@RequestBody AddressBook addressBook) {
-        addressBook.setUserId(BaseContext.getCurrentId());
-        log.info("addressBook:{}", addressBook);
-        addressBookService.save(addressBook);
+        addressBookService.saveUserInfo(addressBook);
         return R.success("新增地址成功");
     }
 
+    ///**
+    // * 查询指定用户的全部地址
+    // * @return
+    // */
+    //@GetMapping("/list")
+    //private R<List<AddressBook>> list() {
+    //    LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
+    //    queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+    //    queryWrapper.orderByDesc(AddressBook::getUpdateTime);
+    //    List<AddressBook> list = addressBookService.list(queryWrapper);
+    //    return R.success(list);
+    //}
+
     /**
-     * 查询指定用户的全部地址
+     * 查询指定用户的信息
      * @return
      */
     @GetMapping("/list")
-    private R<List<AddressBook>> list() {
+    private R<AddressBook> list() {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
-        queryWrapper.orderByDesc(AddressBook::getUpdateTime);
-        List<AddressBook> list = addressBookService.list(queryWrapper);
-        return R.success(list);
-    }
-
-    /**
-     * 设置默认地址
-     * @param addressBook
-     * @return
-     */
-    @PutMapping("/default")
-    private R<String> setDefault(@RequestBody AddressBook addressBook){
-        addressBookService.setDefault(addressBook);
-        return R.success("设置默认地址成功");
-    }
-
-    /**
-     * 获得默认地址
-     * @return
-     */
-    @GetMapping("/default")
-    private R<AddressBook> getDefault(){
-        LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
-        queryWrapper.eq(AddressBook::getIsDefault,1);
+        //queryWrapper.orderByDesc(AddressBook::getUpdateTime);
         AddressBook addressBook = addressBookService.getOne(queryWrapper);
         return R.success(addressBook);
     }
+
+    ///**
+    // * 设置默认
+    // * @param addressBook
+    // * @return
+    // */
+    //@PutMapping("/default")
+    //private R<String> setDefault(@RequestBody AddressBook addressBook){
+    //    addressBookService.setDefault(addressBook);
+    //    return R.success("设置默认地址成功");
+    //}
+
+    ///**
+    // * 获得默认地址
+    // * @return
+    // */
+    //@GetMapping("/default")
+    //private R<AddressBook> getDefault(){
+    //    LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
+    //    queryWrapper.eq(AddressBook::getUserId,BaseContext.getCurrentId());
+    //    queryWrapper.eq(AddressBook::getIsDefault,1);
+    //    AddressBook addressBook = addressBookService.getOne(queryWrapper);
+    //    return R.success(addressBook);
+    //}
 
     /**
      * 根据id查询地址
@@ -77,8 +90,11 @@ public class AddressBookController {
      * @return
      */
     @GetMapping("/{id}")
-    private R<AddressBook> getAddressBook(@PathVariable Long id){
-        AddressBook addressBook = addressBookService.getById(id);
+    private R<AddressBook> getAddressBook(@PathVariable String id){
+        Long userId = Long.valueOf(id);
+        LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AddressBook::getUserId,userId);
+        AddressBook addressBook = addressBookService.getOne(queryWrapper);
         if (addressBook!=null){
             return R.success(addressBook);
         }else {
@@ -93,6 +109,7 @@ public class AddressBookController {
      */
     @PutMapping
     private R<String> update(@RequestBody AddressBook addressBook){
+        log.warn("头像地址：{}",addressBook.getImage());
         addressBookService.updateById(addressBook);
         return R.success("保存地址成功");
     }

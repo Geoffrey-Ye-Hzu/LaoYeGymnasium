@@ -1,8 +1,6 @@
 package com.geoffrey.laoye.controller;
 
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.geoffrey.laoye.common.BaseContext;
 import com.geoffrey.laoye.common.R;
 import com.geoffrey.laoye.entity.ShoppingCart;
@@ -11,12 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/shoppingCart")
 @Slf4j
+@SuppressWarnings("all")
+
 public class ShoppingCartController {
     @Autowired
     private ShoppingCartService shoppingCartService;
@@ -33,13 +32,11 @@ public class ShoppingCartController {
         //设置用户id，指定当前是哪个用户的购物车数据
         shoppingCart.setUserId(currentId);
         //查询当前菜品或者套餐是否在购物车中
-        Long dishId = shoppingCart.getDishId();
+        //Long dishId = shoppingCart.getDishId();
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShoppingCart::getUserId, currentId);
-        //添加到购物车的是菜品
-        queryWrapper.eq(dishId != null, ShoppingCart::getDishId, shoppingCart.getDishId());
         //添加到购物车的是套餐
-        queryWrapper.eq(dishId == null, ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
+        queryWrapper.eq(ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
 
         ShoppingCart shoppingCartServiceOne = shoppingCartService.getOne(queryWrapper);
         if (shoppingCartServiceOne != null) {
@@ -56,7 +53,7 @@ public class ShoppingCartController {
     }
 
     /**
-     * 减少购物车菜品或套餐的数量
+     * 减少购物车项目数量
      *
      * @param shoppingCart
      * @return
@@ -66,14 +63,11 @@ public class ShoppingCartController {
         Long currentId = BaseContext.getCurrentId();
         //设置用户id，指定当前是哪个用户的购物车数据
         shoppingCart.setUserId(currentId);
-        //查询当前菜品或者套餐是否在购物车中
-        Long dishId = shoppingCart.getDishId();
+        //查询当前项目是否在购物车中
         LambdaQueryWrapper<ShoppingCart> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShoppingCart::getUserId, currentId);
-        //添加到购物车的是菜品
-        queryWrapper.eq(dishId != null, ShoppingCart::getDishId, shoppingCart.getDishId());
         //添加到购物车的是套餐
-        queryWrapper.eq(dishId == null, ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
+        queryWrapper.eq(ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
 
         ShoppingCart shoppingCartServiceOne = shoppingCartService.getOne(queryWrapper);
 
@@ -84,8 +78,7 @@ public class ShoppingCartController {
         //数量只剩下1再减则从购物车中删除
         if (shoppingCartServiceOne.getNumber() == 0) {
             LambdaQueryWrapper<ShoppingCart> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(dishId!=null,ShoppingCart::getDishId, dishId);
-            lambdaQueryWrapper.eq(dishId==null,ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
+            lambdaQueryWrapper.eq(ShoppingCart::getSetmealId, shoppingCart.getSetmealId());
             lambdaQueryWrapper.eq(ShoppingCart::getUserId, currentId);
             shoppingCartService.remove(lambdaQueryWrapper);
         }

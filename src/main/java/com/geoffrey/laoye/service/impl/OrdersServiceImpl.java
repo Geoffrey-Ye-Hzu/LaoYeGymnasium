@@ -8,7 +8,6 @@ import com.geoffrey.laoye.common.exception.CustomException;
 import com.geoffrey.laoye.entity.*;
 import com.geoffrey.laoye.mapper.OrdersMapper;
 import com.geoffrey.laoye.service.*;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
+@SuppressWarnings("all")
 public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> implements OrdersService {
 
     @Autowired
@@ -64,9 +64,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
             orderDetail.setOrderId(orderId);
             orderDetail.setName(item.getName());
             orderDetail.setImage(item.getImage());
-            orderDetail.setDishId(item.getDishId());
+            //orderDetail.setDishId(item.getDishId());
             orderDetail.setSetmealId(item.getSetmealId());
-            orderDetail.setDishFlavor(item.getDishFlavor());
+            //orderDetail.setDishFlavor(item.getDishFlavor());
             orderDetail.setNumber(item.getNumber());
             orderDetail.setAmount(item.getAmount());
             amount.addAndGet(item.getAmount().multiply(new BigDecimal(item.getNumber())).intValue());
@@ -86,12 +86,12 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         orders.setPhone(addressBook.getPhone());
         orders.setUserName(user.getName());
         orders.setConsignee(addressBook.getConsignee());
-        orders.setAddress(
-                (addressBook.getProvinceName() == null ? "" : addressBook.getProvinceName()) +
-                        (addressBook.getCityName() == null ? "" : addressBook.getCityName()) +
-                        (addressBook.getDistrictName() == null ? "" : addressBook.getDistrictName()) +
-                        (addressBook.getDetail() == null ? "" : addressBook.getDetail())
-        );
+        //orders.setAddress(
+        //        (addressBook.getProvinceName() == null ? "" : addressBook.getProvinceName()) +
+        //                (addressBook.getCityName() == null ? "" : addressBook.getCityName()) +
+        //                (addressBook.getDistrictName() == null ? "" : addressBook.getDistrictName()) +
+        //                (addressBook.getDetail() == null ? "" : addressBook.getDetail())
+        //);
 
         //根据查询到的购物车数据，对订单表插入数据（1条）
         super.save(orders);

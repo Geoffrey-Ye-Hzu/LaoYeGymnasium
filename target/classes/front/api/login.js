@@ -13,6 +13,21 @@ function loginoutApi() {
     })
 }
 
+function registerApi(data) {
+    return $axios({
+        'url': '/user/register',
+        'method': 'post',
+        data
+    })
+}
+
+function userIdApi() {
+    return $axios({
+        'url': '/user',
+        'method': 'get',
+    })
+}
+
 //根据手机号获取后端生成的验证码
 function sendMsgApi(data) {
     return $axios({

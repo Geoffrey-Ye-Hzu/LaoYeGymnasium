@@ -42,7 +42,9 @@ public class LoginCheckFilter implements Filter {
                 "/front/**",
                 "/common/**",
                 "/user/sendMsg", //移动端发送短信
-                "/user/login" //移动端登录
+                "/user/login" ,//移动端登录
+                "/user/logout", //移动端退出登录
+                "/user/register" //移动端注册账号
         };
         //2.判断本次请求是否需要处理
         boolean checkFlag = check(urls, requestURI);

@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/order")
 @Slf4j
+@SuppressWarnings("all")
+
 public class OrdersController {
     @Autowired
     private OrdersService ordersService;

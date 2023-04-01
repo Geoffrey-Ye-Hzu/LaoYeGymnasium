@@ -1,12 +1,7 @@
 package com.geoffrey.laoye.entity;
 
 import lombok.Data;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.io.Serializable;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 /**
  * 用户信息
  */
@@ -21,9 +16,16 @@ public class User implements Serializable {
     //姓名
     private String name;
 
+    //昵称
+    //private String nickname;
+
 
     //手机号
     private String phone;
+
+    //密码
+    //@TableField(select = false)
+    private String password;
 
 
     //性别 0 女 1 男

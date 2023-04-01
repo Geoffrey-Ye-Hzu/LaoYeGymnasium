@@ -11,12 +11,12 @@
     <link rel="stylesheet" href="../../styles/page.css"/>
 </head>
 <body>
-<div class="dashboard-container" id="combo-app">
+<div class="dashboard-container" id="rent-app">
     <div class="container">
         <div class="tableBar">
             <el-input
                     v-model="input"
-                    placeholder="请输入套餐名称"
+                    placeholder="请输入器材名称"
                     style="width: 250px"
                     clearable
                     @keyup.enter.native="handleQuery"
@@ -38,9 +38,9 @@
                 >批量停售</span>
                 <el-button
                         type="primary"
-                        @click="addCombo('add')"
+                        @click="addRent('add')"
                 >
-                    + 新建套餐
+                    + 新建器材
                 </el-button>
             </div>
         </div>
@@ -56,7 +56,7 @@
             ></el-table-column>
             <el-table-column
                     prop="name"
-                    label="套餐名称"
+                    label="器材名称"
             ></el-table-column>
 
             <el-table-column prop="image" label="图片" align="center">
@@ -76,18 +76,18 @@
 
             <el-table-column
                     prop="timeLimit"
-                    label="套餐时间限制(小时)"
+                    label="租用时间限制"
             ></el-table-column>
 
             <el-table-column
                     prop="price"
-                    label="套餐价"
+                    label="租借价格(每小时）"
             >
                 <template slot-scope="scope">
                     <span>￥{{ scope.row.price / 100 }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="售卖状态">
+            <el-table-column label="租借状态">
                 <template slot-scope="scope">
                     <span>{{ scope.row.status == '0' ? '停售' : '启售' }}</span>
                 </template>
@@ -107,7 +107,7 @@
                             type="text"
                             size="small"
                             class="blueBug"
-                            @click="addCombo(scope.row.id)"
+                            @click="addRent(scope.row.id)"
                     >
                         修改
                     </el-button>
@@ -149,10 +149,10 @@
 <!-- 引入axios -->
 <script src="../../plugins/axios/axios.min.js"></script>
 <script src="../../js/request.js"></script>
-<script src="../../api/combo.js"></script>
+<script src="../../api/rent.js"></script>
 <script>
     new Vue({
-        el: '#combo-app',
+        el: '#rent-app',
         data() {
             return {
                 input: '',
@@ -177,7 +177,7 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getComboPage(params).then(res => {
+                await getRentPage(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
@@ -194,18 +194,18 @@
                 this.init();
             },
             // 添加
-            addCombo(st) {
+            addRent(st) {
                 if (st === 'add') {
                     window.parent.menuHandle({
-                        id: '5',
-                        url: '/backend/page/combo/add.html',
-                        name: '添加套餐'
+                        id: '6',
+                        url: '/backend/page/rent/add.html',
+                        name: '添加器材'
                     }, true)
                 } else {
                     window.parent.menuHandle({
-                        id: '5',
-                        url: '/backend/page/combo/add.html?id=' + st,
-                        name: '修改套餐'
+                        id: '6',
+                        url: '/backend/page/rent/add.html?id=' + st,
+                        name: '修改器材'
                     }, true)
                 }
             },
@@ -217,11 +217,11 @@
                         return this.$message.error('请选择删除对象')
                     }
                 }
-                this.$confirm('确定删除该套餐, 是否继续?', '确定删除', {
+                this.$confirm('确定删除该器材, 是否继续?', '确定删除', {
                     'confirmButtonText': '确定',
                     'cancelButtonText': '取消',
                 }).then(() => {
-                    deleteCombo(type === '批量' ? this.checkList.join(',') : id).then(res => {
+                    deleteRent(type === '批量' ? this.checkList.join(',') : id).then(res => {
                         if (res.code === 1) {
                             this.$message.success('删除成功！')
                             this.handleQuery()
@@ -239,7 +239,7 @@
                 let params = {}
                 if (typeof row === 'string') {
                     if (this.checkList.length == 0) {
-                        this.$message.error('批量操作，请先勾选操作套餐！')
+                        this.$message.error('批量操作，请先勾选操作器材！')
                         return false
                     }
                     params.ids = this.checkList.join(',')
@@ -248,15 +248,15 @@
                     params.ids = row.id
                     params.status = row.status ? '0' : '1'
                 }
-                this.$confirm('确认更改该套餐状态?', '提示', {
+                this.$confirm('确认更改该器材状态?', '提示', {
                     'confirmButtonText': '确定',
                     'cancelButtonText': '取消',
                     'type': 'warning'
                 }).then(() => {
                     // 起售停售---批量起售停售接口
-                    setComboByStatus(params).then(res => {
+                    setRentByStatus(params).then(res => {
                         if (res.code === 1) {
-                            this.$message.success('套餐状态已经更改成功！')
+                            this.$message.success('器材状态已经更改成功！')
                             this.handleQuery()
                         } else {
                             this.$message.error(res.msg || '操作失败')

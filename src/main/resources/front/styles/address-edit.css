@@ -1,6 +1,65 @@
+/*.avatar-uploader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px dashed #d9d9d9;
+  cursor: pointer;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #999;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}*/
+
+.avatar-uploader{
+  margin-left: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px dashed #d9d9d9;
+  cursor: pointer;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 50%;
+  cursor: pointer;
+  position: center;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 120px;
+  height: 120px;
+  line-height: 78px;
+  text-align: center;
+}
+.avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+
+}
+
+
 #address_edit {
   height: 100%;
 }
+
 #address_edit .divHead {
   width: 100%;
   height: 88rem;
@@ -35,6 +94,21 @@
   background: #ffffff;
   padding-left: 9rem;
   padding-right: 9rem;
+}
+
+#address_edit .divContent .divItemIcon {
+  height: 150rem;
+  line-height: 150rem;
+  font-size: 14rem;
+  font-family: PingFangSC, PingFangSC-Regular;
+  font-weight: 500;
+  text-align: left;
+  color: #333333;
+  line-height: 20rem;
+  letter-spacing: 0rem;
+  border-bottom: 1px solid #efefef;
+  display: flex;
+  align-items: center;
 }
 
 #address_edit .divContent .divItem {

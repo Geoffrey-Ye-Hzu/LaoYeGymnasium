@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 @Slf4j
+@SuppressWarnings("all")
+
 public class OrderDetailController {
     @Autowired
     private OrderDetailService orderDetailService;

@@ -1,6 +1,6 @@
 #login .divHead {
   opacity: 1;
-  background: #333333;
+  background: #4a1ef8d9;
   height: 88rem;
   width: 100%;
   font-size: 18rem;
@@ -24,6 +24,7 @@
 
 #login .divContainer input {
   border: 0;
+  font-size: 20px;
   height: 63rem;
 }
 
@@ -35,6 +36,15 @@
   margin-right: 10rem;
 }
 
+#login .clickRegister{
+  margin-top: 10rem;
+}
+#login .clickRegister .left-clickRegister{
+  margin-left: 20rem;
+}
+#login .clickRegister .right-clickRegister{
+  margin-left: 185rem;
+}
 #login .divContainer span {
   position: absolute;
   right: 20rem;
@@ -45,15 +55,15 @@
   font-family: PingFangSC, PingFangSC-Regular;
   font-weight: 400;
   text-align: left;
-  color: #409eff;
+  color: #3700f1;
   letter-spacing: 0px;
 }
 
 #login .divMsg {
-  width: 168px;
+  width: 200px;
   height: 17px;
   opacity: 1;
-  font-size: 12px;
+  font-size: 14px;
   font-family: PingFangSC, PingFangSC-Regular;
   font-weight: 400;
   text-align: center;
@@ -66,7 +76,7 @@
 #login .btnSubmit {
   width: 356rem;
   height: 40rem;
-  margin: 20rem 10rem 0 10rem;
+  margin: 10rem 10rem 0 10rem;
   border-radius: 20px;
   border: 0;
 
@@ -94,3 +104,6 @@
   background: rgba(255, 142, 0, 1);
   color: #333333;
 }
+
+
+

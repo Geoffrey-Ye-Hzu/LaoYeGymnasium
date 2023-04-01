@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no,minimal-ui">
-        <title>老叶外卖历史订单</title>
+        <title>老叶体育馆历史订单</title>
         <link rel="icon" href="./../images/laoyelogo.ico">
         <!--不同屏幕尺寸根字体设置-->
         <script src="./../js/base.js"></script>
@@ -27,16 +27,17 @@
             <div class="divContent">
                 <div class="divAddress">
                     <div @click="toAddressPage">                    
-                        <div class="address">{{address.detail}}</div>
+<!--                        <div class="address">{{address.detail}}</div>-->
                         <div class="name">
                             <span>{{address.consignee}}{{address.sex === '1' ? '先生':'女士'}}</span>
                             <span>{{address.phone}}</span>
                         </div>
                         <i class="el-icon-arrow-right"></i>
                     </div>
-                    <div class="divSplit"></div>
-                    <div class="divFinishTime">预计{{finishTime}}送达</div>
                 </div>
+
+                <!--                    <div class="divSplit"></div>-->
+                <!--                    <div class="divFinishTime">预计{{finishTime}}送达</div>-->
                 <div class="order">
                     <div class="title">订单明细</div>
                     <div class="divSplit"></div>
@@ -59,7 +60,7 @@
                     </div>
                 </div>
                 <div class="note">
-                    <div class="title">备注</div>
+                    <div class="title"> 备注</div>
                     <van-field
                         v-model="note"
                         rows="2"
@@ -103,7 +104,7 @@
                         address:{
                             phone:'',//手机号
                             consignee:'',//姓名
-                            detail:'',//详细地址
+                            // detail:'',//详细地址
                             sex:'1',
                             id:undefined
                         },
@@ -146,12 +147,12 @@
                         //获取购物车的商品
                         this.getCartData()
                     },
-                    //获取默认地址
+                    // 获取默认地址
                     async defaultAddress(){
                         const res = await  getDefaultAddressApi()
                         if(res.code === 1){
                            this.address = res.data
-                           this.getFinishTime()
+                           // this.getFinishTime()
                         }else{
                             window.requestAnimationFrame(()=>{
                                 window.location.href = '/front/page/address-edit.html'
@@ -159,21 +160,21 @@
                         }
                     },
                     //获取送达时间
-                    getFinishTime(){
-                        let now = new Date()
-                        let hour = now.getHours() +1
-                        let minute = now.getMinutes()
-                        if(hour.toString().length <2){
-                            hour = '0' + hour
-                        }
-                        if(minute.toString().length <2){
-                            minute = '0' + minute
-                        }
-                        this.finishTime = hour + ':' + minute
-                    },
+                    // getFinishTime(){
+                    //     let now = new Date()
+                    //     let hour = now.getHours() +1
+                    //     let minute = now.getMinutes()
+                    //     if(hour.toString().length <2){
+                    //         hour = '0' + hour
+                    //     }
+                    //     if(minute.toString().length <2){
+                    //         minute = '0' + minute
+                    //     }
+                    //     this.finishTime = hour + ':' + minute
+                    // },
                     toAddressPage(){
                         window.requestAnimationFrame(()=>{
-                            window.location.href = '/front/page/address.html'
+                            window.location.href = 'address1.html'
                         })
                     },
                     //获取购物车数据

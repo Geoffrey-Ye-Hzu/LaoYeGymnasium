@@ -22,6 +22,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/common")
 @Slf4j
+@SuppressWarnings("all")
+
 public class CommonController {
 
     @Value("${laoye.path}")

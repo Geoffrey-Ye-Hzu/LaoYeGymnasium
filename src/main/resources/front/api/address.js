@@ -49,19 +49,22 @@ function addressFindOneApi(id) {
   })
 }
 
-//设置默认地址
-function  setDefaultAddressApi(data){
-  return $axios({
-      'url': '/addressBook/default',
-      'method': 'put',
-      data
-    })
-}
 
-//获取默认地址
-function getDefaultAddressApi() {
-  return $axios({
-    'url': `/addressBook/default`,
-    'method': 'get',
-  })
-}
+
+// //设置默认地址
+// function  setDefaultAddressApi(data){
+//   return $axios({
+//       'url': '/addressBook/default',
+//       'method': 'put',
+//       data
+//     })
+// }
+//
+// //获取默认地址
+// function getDefaultAddressApi() {
+//   return $axios({
+//     'url': `/addressBook/default`,
+//     'method': 'get',
+//   })
+// }
+

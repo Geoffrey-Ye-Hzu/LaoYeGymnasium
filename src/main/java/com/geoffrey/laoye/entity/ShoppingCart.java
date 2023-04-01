@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  * 购物车
  */
 @Data
+
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,14 +24,17 @@ public class ShoppingCart implements Serializable {
     //用户id
     private Long userId;
 
-    //菜品id
-    private Long dishId;
+    //器材id
+    private Long rentId;
+
+    //单人票id
+    private Long ticketId;
 
     //套餐id
     private Long setmealId;
 
     //口味
-    private String dishFlavor;
+    //private String dishFlavor;
 
     //数量
     private Integer number;

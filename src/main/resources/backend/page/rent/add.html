@@ -178,13 +178,13 @@
             width: 100%;
         }
 
-        #combo-add-app .setmealFood .el-form-item__label::before {
+        #rent-add-app .setmealFood .el-form-item__label::before {
             content: '*';
             color: #F56C6C;
             margin-right: 4px;
         }
 
-        #combo-add-app .uploadImg .el-form-item__label::before {
+        #rent-add-app .uploadImg .el-form-item__label::before {
             content: '*';
             color: #F56C6C;
             margin-right: 4px;
@@ -192,7 +192,7 @@
     </style>
 </head>
 <body>
-<div class="addBrand-container" id="combo-add-app">
+<div class="addBrand-container" id="rent-add-app">
     <div class="container">
         <el-form
                 ref="ruleForm"
@@ -203,12 +203,12 @@
                 class="demo-ruleForm"
         >
             <div>
-                <el-form-item label="套餐名称:" prop="name">
-                    <el-input v-model="ruleForm.name" placeholder="请填写套餐名称" maxlength="20"/>
+                <el-form-item label="器材名称:" prop="name">
+                    <el-input v-model="ruleForm.name" placeholder="请填写器材名称" maxlength="20"/>
                 </el-form-item>
-                <el-form-item label="套餐分类:" prop="idType">
-                    <el-select v-model="ruleForm.idType" placeholder="请选择套餐分类" @change="$forceUpdate()">
-                        <el-option v-for="(item, index) in setCombo" :key="index" :label="item.name"
+                <el-form-item label="器材分类:" prop="idType">
+                    <el-select v-model="ruleForm.idType" placeholder="请选择器材分类" @change="$forceUpdate()">
+                        <el-option v-for="(item, index) in setRent" :key="index" :label="item.name"
                                    :value="item.id"/>
                     </el-select>
                 </el-form-item>
@@ -220,12 +220,12 @@
             </div>
 
             <div>
-                <el-form-item label="套餐价格:" prop="price">
-                    <el-input v-model="ruleForm.price" placeholder="请设置套餐价格"/>
+                <el-form-item label="租借价格:" prop="price">
+                    <el-input v-model="ruleForm.price" placeholder="请设置租借价格(每小时价格）"/>
                 </el-form-item>
             </div>
             <div>
-                <el-form-item label="套餐图片:" class="uploadImg">
+                <el-form-item label="器材图片:" class="uploadImg">
                     <el-upload
                             class="avatar-uploader"
                             action="/common/upload"
@@ -242,8 +242,8 @@
 
 
             <div class="address">
-                <el-form-item label="套餐描述:">
-                    <el-input v-model="ruleForm.description" type="textarea" :rows="3" placeholder="套餐描述，最长200字"
+                <el-form-item label="器材描述:">
+                    <el-input v-model="ruleForm.description" type="textarea" :rows="3" placeholder="器材描述，最长200字"
                               maxlength="200"/>
                 </el-form-item>
             </div>
@@ -257,7 +257,7 @@
                             class="continue"
                             @click="submitForm('ruleForm', true)"
                     >
-                        保存并继续添加套餐
+                        保存并继续添加器材
                     </el-button>
                 </el-form-item>
             </div>
@@ -276,19 +276,19 @@
 <!-- 引入axios -->
 <script src="../../plugins/axios/axios.min.js"></script>
 <script src="../../js/request.js"></script>
-<script src="../../api/combo.js"></script>
+<script src="../../api/rent.js"></script>
 <script src="../../js/validate.js"></script>
 <script src="../../js/index.js"></script>
 <script src="../../api/food.js"></script>
 <script>
     new Vue({
-        el: '#combo-add-app',
+        el: '#rent-add-app',
         data() {
             return {
                 id: '',
                 actionType: '',
                 value: '',
-                setCombo: [],
+                setRent: [],
                 seachKey: '',
                 // dishList: [],
                 imageUrl: '',
@@ -321,28 +321,28 @@
                 return {
                     name: {
                         required: true,
-                        message: '请输入套餐名称',
+                        message: '请输入器材名称',
                         trigger: 'blur',
                     },
                     idType: {
                         required: true,
-                        message: '请选择套餐分类',
+                        message: '请选择器材分类',
                         trigger: 'change',
                     },
 
                     price: {
                         required: true,
-                        // 'message': '请输入套餐价格',
+                        // 'message': '请输入器材价格',
                         validator: (rules, value, callback) => {
                             if (!value) {
-                                callback(new Error('请填写套餐价格'))
+                                callback(new Error('请填写器材价格'))
                             } else {
                                 const reg = /^\d+(\.\d{0,2})?$/
                                 if (reg.test(value)) {
                                     if (value < 10000) {
                                         callback()
                                     } else {
-                                        callback(new Error('套餐价格小于10000'))
+                                        callback(new Error('器材价格小于10000'))
                                     }
                                 }
                                 // else {
@@ -378,7 +378,7 @@
         },
         methods: {
             async init() {
-                queryComboById(this.id).then((res) => {
+                queryRentById(this.id).then((res) => {
                     if (String(res.code) === '1') {
                         this.ruleForm = res.data
                         this.ruleForm.status = res.data.status === '1'
@@ -397,11 +397,11 @@
             seachHandle() {
                 this.seachKey = this.value
             },
-            // 获取套餐分类
+            // 获取器材分类
             getDishTypeList() {
                 getCategoryList({type: 2, page: 1, pageSize: 1000}).then((res) => {
                     if (res.code === 1) {
-                        this.setCombo = res.data.map((obj) => ({...obj, idType: obj.id}))
+                        this.setRent = res.data.map((obj) => ({...obj, idType: obj.id}))
                     } else {
                         this.$message.error(res.msg || '操作失败')
                     }
@@ -427,16 +427,16 @@
                         prams.categoryId = this.ruleForm.idType
 
                         if (!this.imageUrl) {
-                            this.$message.error('请上传套餐图片')
+                            this.$message.error('请上传器材图片')
                             return
                         }
                         // delete prams.dishList
                         if (this.actionType == 'add') {
                             delete prams.id
-                            addCombo(prams)
+                            addRent(prams)
                                 .then((res) => {
                                     if (res.code === 1) {
-                                        this.$message.success('套餐添加成功！')
+                                        this.$message.success('器材添加成功！')
                                         if (!st) {
                                             this.goBack()
                                         } else {
@@ -467,10 +467,10 @@
                                 })
                         } else {
                             delete prams.updateTime
-                            editCombo(prams)
+                            editRent(prams)
                                 .then((res) => {
                                     if (res.code === 1) {
-                                        this.$message.success('套餐修改成功！')
+                                        this.$message.success('器材修改成功！')
                                         this.goBack()
                                     } else {
                                         this.$message.error(res.msg || '操作失败')
@@ -514,14 +514,14 @@
             goBack() {
                 window.parent.menuHandle(
                     {
-                        id: '5',
-                        url: '/backend/page/combo/list.html',
-                        name: '套餐管理',
+                        id: '4',
+                        url: '/backend/page/rent/list.html',
+                        name: '器材管理',
                     },
                     false
                 )
             },
-            // 获取套餐分类
+            // 获取器材分类
             getDishType() {
                 getCategoryList({'type': 1}).then(res => {
                     if (res.code === 1) {

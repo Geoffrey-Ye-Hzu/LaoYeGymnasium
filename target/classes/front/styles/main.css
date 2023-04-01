@@ -38,24 +38,40 @@
   display: flex;
 }
 #main .divTitle .divStatic .logo {
-  width: 49rem;
-  height: 39rem;
+  width: 59rem;
+  height: 45rem;
 
   opacity: 1;
   background: #333333;
   border-radius: 6rem;
   margin-right: 10rem;
+  margin-bottom: 5rem;
 }
 
-#main .divTitle .divStatic .divDesc .divName {
-  width: 90rem;
+#main .divTitle .divStatic .divDesc .divTitleName {
+  width: 280rem;
   height: 25rem;
   opacity: 1;
   font-size: 18rem;
   font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 500;
+  font-weight: 600;
   text-align: left;
+  margin-top: 10rem;
   color: #20232a;
+
+  line-height: 25rem;
+}
+#main .divTitle .divStatic .divDesc .divName {
+  width: 280rem;
+  height: 25rem;
+  opacity: 1;
+  font-size: 18rem;
+  font-family: PingFangSC, PingFangSC-Regular;
+  font-weight: 400;
+  text-align: left;
+  margin-top: 10rem;
+  color: #20232a;
+
   line-height: 25rem;
 }
 
@@ -88,7 +104,7 @@
   opacity: 1;
   font-size: 12rem;
   font-family: PingFangSC, PingFangSC-Regular;
-  font-weight: 400;
+  font-weight: 500;
   text-align: left;
   color: #9b9b9b;
   line-height: 17rem;

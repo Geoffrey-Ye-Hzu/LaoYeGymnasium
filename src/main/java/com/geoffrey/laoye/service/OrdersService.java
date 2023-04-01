@@ -1,7 +1,6 @@
 package com.geoffrey.laoye.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.geoffrey.laoye.entity.Dish;
 import com.geoffrey.laoye.entity.Orders;
 import org.springframework.transaction.annotation.Transactional;
 

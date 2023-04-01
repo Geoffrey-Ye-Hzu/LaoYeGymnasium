@@ -35,12 +35,12 @@ const addDish = (params) => {
 }
 
 // 查询详情
-const queryDishById = (id) => {
-  return $axios({
-    url: `/dish/${id}`,
-    method: 'get'
-  })
-}
+// const queryDishById = (id) => {
+//   return $axios({
+//     url: `/dish/${id}`,
+//     method: 'get'
+//   })
+// }
 
 // 获取菜品分类列表
 const getCategoryList = (params) => {
